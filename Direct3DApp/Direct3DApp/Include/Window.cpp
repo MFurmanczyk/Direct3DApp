@@ -37,19 +37,27 @@ Window::WindowClass::~WindowClass()
 	UnregisterClass(WindowClassName, GetInstance());
 }
 
-Window::Window(int pWidth, int pHeight, const char* pName) noexcept
+Window::Window(int pWidth, int pHeight, const char* pName) 
 {
 	RECT wr;
 	wr.left = 100;
 	wr.right = pWidth + wr.left;
 	wr.top = 100;
 	wr.bottom = pHeight + wr.top;
-	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	{
+		throw WindowException(__LINE__, __FILE__, GetLastError());
+	}
 
 	hWnd = CreateWindow(WindowClass::GetName(), pName,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this);
+
+	if (hWnd == nullptr)
+	{
+		throw WindowException(__LINE__, __FILE__, GetLastError());
+	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 }

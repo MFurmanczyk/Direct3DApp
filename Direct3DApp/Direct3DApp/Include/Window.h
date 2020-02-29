@@ -33,7 +33,7 @@ private:
 		HINSTANCE hInstance;
 	};
 public:
-	Window(int pWidth, int pHeight, const char* pName) noexcept;
+	Window(int pWidth, int pHeight, const char* pName);
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
@@ -46,6 +46,3 @@ private:
 	int Height;
 	HWND hWnd;
 };
-
-
-#define WND_EXCEPT(hr) Window::WindowException(__LINE__, __FILE__, hr)
