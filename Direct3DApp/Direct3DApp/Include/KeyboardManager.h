@@ -23,29 +23,29 @@ public:
 	public:
 		Event() : Type(EType::Invalid), Code(0u) {}
 		Event(EType pType, unsigned char pCode) noexcept : Type(pType), Code(pCode) {}
-		inline bool IsPressed() const noexcept { return Type == EType::Pressed; }
-		inline bool IsReleased() const noexcept { return Type == EType::Released; }
-		inline bool IsValid() const noexcept { return Type != EType::Invalid; }
-		inline char GetCode() const noexcept { return this->Code; }
+		bool IsPressed() const noexcept { return Type == EType::Pressed; }
+		bool IsReleased() const noexcept { return Type == EType::Released; }
+		bool IsValid() const noexcept { return Type != EType::Invalid; }
+		char GetCode() const noexcept { return this->Code; }
 	};
 public:
 	KeyboardManager() = default;
 	KeyboardManager(const KeyboardManager&) = delete;
 	KeyboardManager& operator= (const KeyboardManager&) = delete;
 	//Key events
-	inline bool IsKeyPressed(unsigned char KeyCode) noexcept { return KeyStates[KeyCode]; };
+	bool IsKeyPressed(unsigned char KeyCode) noexcept { return KeyStates[KeyCode]; };
 	std::optional<Event> ReadKey() noexcept;
 	bool IsKeyEmpty() const noexcept;
-	inline void FlushKey() noexcept { KeyBuffer = std::queue<Event>(); };
+	void FlushKey() noexcept { KeyBuffer = std::queue<Event>(); };
 	//Char events
 	std::optional<char>ReadChar() noexcept;
 	bool IsCharEmpty() noexcept;
 	void FlushChar() noexcept;
 	void Flush() noexcept;
 	//Autorepeat
-	inline void EnableAutorepeat() noexcept { AutorepeatEnabled = true; };
-	inline void DisableAutorepeat() noexcept { AutorepeatEnabled = false; };
-	inline bool IsAutorepeatEnabled() const noexcept { return this->AutorepeatEnabled; };
+	void EnableAutorepeat() noexcept { AutorepeatEnabled = true; };
+	void DisableAutorepeat() noexcept { AutorepeatEnabled = false; };
+	bool IsAutorepeatEnabled() const noexcept { return this->AutorepeatEnabled; };
 private:
 	void OnKeyPressed(unsigned char KeyCode) noexcept;
 	void OnKeyReleased(unsigned char KeyCode) noexcept;
@@ -62,3 +62,12 @@ private:
 	std::queue<char> CharBuffer;
 
 };
+
+template<typename T>
+inline void KeyboardManager::TrimBuffer(std::queue<T>& Buffer) noexcept
+{
+	while (Buffer.size() > BufferSize)
+	{
+		Buffer.pop();
+	}
+}

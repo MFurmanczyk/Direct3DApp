@@ -1,6 +1,7 @@
 #pragma once
 #include "WindowHeader.h"
 #include "../Include/Exception.h"
+#include "KeyboardManager.h"
 
 class Window
 {
@@ -41,6 +42,8 @@ private:
 	static LRESULT CALLBACK HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMessageThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+public:
+	KeyboardManager Keyboard;
 private:
 	int Width;
 	int Height;
