@@ -146,13 +146,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Include\Exception.cpp" />
+    <ClCompile Include="Include\KeyboardManager.cpp" />
     <ClCompile Include="Include\Window.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Exception.h" />
+    <ClInclude Include="Include\KeyboardManager.h" />
     <ClInclude Include="Include\Window.h" />
     <ClInclude Include="Include\WindowHeader.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Direct3DApp.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Desktop\r2d2.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
