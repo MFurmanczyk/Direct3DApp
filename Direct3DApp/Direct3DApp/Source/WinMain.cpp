@@ -3,21 +3,38 @@
 #include "../Include/Window.h"
 
 
+
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	Window Wnd(1280, 720, "DirectX App");
-	MSG Msg;
-	BOOL gResult;
-	while ((gResult = GetMessage(&Msg, nullptr, NULL, NULL)) > 0)
+	try
 	{
-		TranslateMessage(&Msg);
-		DispatchMessage(&Msg);
-	}
+		Window Wnd(1280, 720, "DirectX App");
+		MSG Msg;
+		BOOL gResult;
+		while ((gResult = GetMessage(&Msg, nullptr, NULL, NULL)) > 0)
+		{
+			TranslateMessage(&Msg);
+			DispatchMessage(&Msg);
+		}
 
-	if (gResult == -1)
+		if (gResult == -1)
+		{
+			return -1;
+		}
+
+		return Msg.wParam;
+	}
+	catch (const Exception & e)
 	{
-		return -1;
+		MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
 	}
-
-	return Msg.wParam;
+	catch (std::exception & e)
+	{
+		MessageBox(nullptr, e.what(), "Standard exception", MB_OK | MB_ICONEXCLAMATION);
+	}
+	catch (...)
+	{
+		MessageBox(nullptr, "No details available" , "Unknown exception", MB_OK | MB_ICONEXCLAMATION);
+	}
+	return -1;
 }
