@@ -1,8 +1,22 @@
 #pragma once
 #include "WindowHeader.h"
+#include "../Include/Exception.h"
 
 class Window
 {
+public:
+	class WindowException : public Exception
+	{
+	public:
+		WindowException(int pLine, const char* pFile, HRESULT hr) noexcept;
+		const char* what() const noexcept override;
+		virtual inline const char* GetType() const noexcept override { return "WindowException"; };
+		static std::string TranslateErrorCode(HRESULT hr) noexcept;
+		inline HRESULT GetErrorCode() const noexcept { return this->hr; };
+		inline std::string GetErrorString() const noexcept { return TranslateErrorCode(hr); };
+	private:
+		HRESULT hr;
+	};
 private:
 	class WindowClass
 	{
@@ -32,3 +46,6 @@ private:
 	int Height;
 	HWND hWnd;
 };
+
+
+#define WND_EXCEPT(hr) Window::WindowException(__LINE__, __FILE__, hr)

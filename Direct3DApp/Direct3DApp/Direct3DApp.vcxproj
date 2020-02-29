@@ -145,10 +145,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Include\Exception.cpp" />
     <ClCompile Include="Include\Window.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Exception.h" />
     <ClInclude Include="Include\Window.h" />
     <ClInclude Include="Include\WindowHeader.h" />
   </ItemGroup>

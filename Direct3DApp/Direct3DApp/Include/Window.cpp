@@ -1,4 +1,5 @@
 #include "Window.h"
+#include<sstream>
 
 Window::WindowClass Window::WindowClass::WndClass;
 
@@ -88,4 +89,45 @@ LRESULT Window::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+///Window exception code
+Window::WindowException::WindowException(int pLine, const char* pFile, HRESULT hr) noexcept
+	: Exception(pLine, pFile), hr(hr)
+{
+
+}
+
+const char* Window::WindowException::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << GetType() << std::endl
+		<< "[Error code] " << GetErrorCode() << std::endl
+		<< "[Description] " << GetErrorString() << std::endl
+		<< GetOriginString();
+	WhatBuffer = oss.str();
+	return WhatBuffer.c_str();
+}
+
+std::string Window::WindowException::TranslateErrorCode(HRESULT hr) noexcept
+{
+	char* pMessageBuffer = nullptr;
+	DWORD nMessageLength = FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER
+		| FORMAT_MESSAGE_FROM_SYSTEM
+		| FORMAT_MESSAGE_IGNORE_INSERTS,
+		nullptr,
+		hr,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		reinterpret_cast<LPSTR> (&pMessageBuffer),
+		NULL,
+		nullptr
+	);
+	if (nMessageLength == 0)
+	{
+		return "Unidentifier error code";
+	}
+	std::string ErrorString = pMessageBuffer;
+	LocalFree(pMessageBuffer);
+	return ErrorString;
 }
