@@ -1,6 +1,5 @@
 #include <sstream>
-#include "../Include/WindowHeader.h"
-#include "../Include/Window.h"
+#include "../Include/Application.h"
 
 
 
@@ -8,21 +7,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	try
 	{
-		Window Wnd(1280, 720, "DirectX App");
-		MSG Msg;
-		BOOL gResult;
-		while ((gResult = GetMessage(&Msg, nullptr, NULL, NULL)) > 0)
-		{
-			TranslateMessage(&Msg);
-			DispatchMessage(&Msg);
-		}
-
-		if (gResult == -1)
-		{
-			return -1;
-		}
-
-		return Msg.wParam;
+		return Application{}.Run();
 	}
 	catch (const Exception & e)
 	{

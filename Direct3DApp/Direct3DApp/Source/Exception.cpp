@@ -1,4 +1,4 @@
-#include "Exception.h"
+#include "../Include/Exception.h"
 #include <sstream>
 
 Exception::Exception(int pLine, const char* pFile) noexcept 

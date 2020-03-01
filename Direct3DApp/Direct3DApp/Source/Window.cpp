@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "../Include/Window.h"
 #include <sstream>
 #include "../resource.h"
 
@@ -45,7 +45,7 @@ Window::Window(int pWidth, int pHeight, const char* pName)
 	wr.right = pWidth + wr.left;
 	wr.top = 100;
 	wr.bottom = pHeight + wr.top;
-	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0)
 	{
 		throw WindowException(__LINE__, __FILE__, GetLastError());
 	}
@@ -66,6 +66,14 @@ Window::Window(int pWidth, int pHeight, const char* pName)
 Window::~Window()
 {
 	DestroyWindow(hWnd);
+}
+
+void Window::SetTitle(const std::string& Title)
+{
+	if (SetWindowText(hWnd, Title.c_str()) == 0) 
+	{
+		throw Window::WindowException(__LINE__, __FILE__, GetLastError());
+	}
 }
 
 LRESULT WINAPI Window::HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -99,6 +107,7 @@ LRESULT Window::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KILLFOCUS:
 		Keyboard.ClearState();
 		break;
+	//Keyboard messages
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 		if(!(lParam & 0x40000000) || Keyboard.IsAutorepeatEnabled())
@@ -111,7 +120,73 @@ LRESULT Window::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_CHAR:
 		Keyboard.OnChar(static_cast<unsigned char>(wParam));
 		break;
+		//Mouse messages
+	case WM_MOUSEMOVE:
+	{
+		POINTS Points = MAKEPOINTS(lParam);
+		if (Points.x >= 0 && Points.x < Width && Points.y >= 0 && Points.y < Height)
+		{
+			Mouse.OnMouseMove(Points.x, Points.y);
+			if (!Mouse.IsInWindow())
+			{
+				SetCapture(hWnd);
+				Mouse.OnMouseEnter();
+			}
+			else
+			{
+				if (wParam & (MK_LBUTTON | MK_RBUTTON))
+				{
+					Mouse.OnMouseMove(Points.x, Points.y);
+				}
+				else
+				{
+					ReleaseCapture();
+					Mouse.OnMouseLeave();
+				}
+			}
+		}
+
+		break;
 	}
+	case WM_LBUTTONDOWN:
+	{
+		POINTS Points = MAKEPOINTS(lParam);
+		Mouse.OnLeftPressed(Points.x, Points.y);
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		POINTS Points = MAKEPOINTS(lParam);
+		Mouse.OnRightPressed(Points.x, Points.y);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		POINTS Points = MAKEPOINTS(lParam);
+		Mouse.OnLeftReleased(Points.x, Points.y);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		POINTS Points = MAKEPOINTS(lParam);
+		Mouse.OnRightReleased(Points.x, Points.y);
+		break;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		POINTS Points = MAKEPOINTS(lParam);
+		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			Mouse.OnWheelUp(Points.x, Points.y);
+		}
+		else if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			Mouse.OnWheelDown(Points.x, Points.y);
+		}
+		break;
+	}
+	}
+
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 

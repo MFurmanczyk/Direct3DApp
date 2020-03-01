@@ -145,14 +145,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Include\Exception.cpp" />
-    <ClCompile Include="Include\KeyboardManager.cpp" />
-    <ClCompile Include="Include\Window.cpp" />
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Exception.cpp" />
+    <ClCompile Include="Source\KeyboardManager.cpp" />
+    <ClCompile Include="Source\MouseManager.cpp" />
+    <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Application.h" />
     <ClInclude Include="Include\Exception.h" />
     <ClInclude Include="Include\KeyboardManager.h" />
+    <ClInclude Include="Include\MouseManager.h" />
     <ClInclude Include="Include\Window.h" />
     <ClInclude Include="Include\WindowHeader.h" />
     <ClInclude Include="resource.h" />

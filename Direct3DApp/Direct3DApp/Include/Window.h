@@ -2,6 +2,7 @@
 #include "WindowHeader.h"
 #include "../Include/Exception.h"
 #include "KeyboardManager.h"
+#include "MouseManager.h"
 
 class Window
 {
@@ -38,12 +39,14 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+	void SetTitle(const std::string& Title); 
 private:
 	static LRESULT CALLBACK HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMessageThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 public:
 	KeyboardManager Keyboard;
+	MouseManager Mouse;
 private:
 	int Width;
 	int Height;
