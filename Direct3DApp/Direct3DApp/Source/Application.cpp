@@ -2,20 +2,14 @@
 
 int Application::Run()
 {
-	MSG Message;
-	BOOL gResult;
-	while ((gResult = GetMessage(&Message, nullptr, NULL, NULL)) > 0)
+	while (true)
 	{
-		TranslateMessage(&Message);
-		DispatchMessage(&Message);
+		if (const auto Ecode = Window::ProcessMessage())
+		{
+			return *Ecode;
+		}
 		DoFrame();
 	}
-	if (gResult == -1)
-	{
-		throw Window::WindowException(__LINE__, __FILE__, GetLastError());
-	}
-
-	return Message.wParam;
 }
 
 void Application::DoFrame()

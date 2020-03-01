@@ -39,7 +39,8 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
-	void SetTitle(const std::string& Title); 
+	void SetTitle(const std::string& Title);
+	static std::optional<int> ProcessMessage();
 private:
 	static LRESULT CALLBACK HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMessageThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

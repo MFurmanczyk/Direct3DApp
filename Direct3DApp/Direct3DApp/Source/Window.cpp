@@ -76,6 +76,21 @@ void Window::SetTitle(const std::string& Title)
 	}
 }
 
+std::optional<int> Window::ProcessMessage()
+{
+	MSG Message;
+	while (PeekMessage(&Message, nullptr, NULL, NULL, PM_REMOVE))
+	{
+		if (Message.message == WM_QUIT)
+		{
+			return Message.wParam;
+		}
+		TranslateMessage(&Message);
+		DispatchMessage(&Message);
+	}
+	return std::optional<int>();
+}
+
 LRESULT WINAPI Window::HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_NCCREATE)
