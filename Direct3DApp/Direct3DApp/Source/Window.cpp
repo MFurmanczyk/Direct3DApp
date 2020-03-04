@@ -61,6 +61,8 @@ Window::Window(int pWidth, int pHeight, const char* pName)
 	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+	//GraphicsManager object
+	pGraphics = std::make_unique<GraphicsManager>(hWnd);
 }
 
 Window::~Window()
@@ -89,6 +91,11 @@ std::optional<int> Window::ProcessMessage()
 		DispatchMessage(&Message);
 	}
 	return std::optional<int>();
+}
+
+GraphicsManager& Window::Graphics()
+{
+	return *pGraphics;
 }
 
 LRESULT WINAPI Window::HandleMessageSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

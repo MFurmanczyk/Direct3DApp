@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Exception.cpp" />
+    <ClCompile Include="Source\GraphicsManager.cpp" />
     <ClCompile Include="Source\KeyboardManager.cpp" />
     <ClCompile Include="Source\MouseManager.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
@@ -156,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="Include\Application.h" />
     <ClInclude Include="Include\Exception.h" />
+    <ClInclude Include="Include\GraphicsManager.h" />
     <ClInclude Include="Include\KeyboardManager.h" />
     <ClInclude Include="Include\MouseManager.h" />
     <ClInclude Include="Include\Timer.h" />

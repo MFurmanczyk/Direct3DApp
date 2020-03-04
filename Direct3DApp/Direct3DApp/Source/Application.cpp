@@ -14,5 +14,5 @@ int Application::Run()
 
 void Application::DoFrame()
 {
-
+	Window.Graphics().EndFrame();
 }
