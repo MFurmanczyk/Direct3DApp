@@ -35,6 +35,16 @@ GraphicsManager::GraphicsManager(HWND hWnd)
 		nullptr,
 		&pContext
 	);
+
+	//access to BackBuffer
+	ID3D11Resource* pBackBuffer = nullptr;
+	pSwapChain->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&pBackBuffer));
+	pDevice->CreateRenderTargetView(
+		pBackBuffer,
+		nullptr,
+		&pTargetView
+	);
+	pBackBuffer->Release();
 }
 
 GraphicsManager::~GraphicsManager()
@@ -56,4 +66,10 @@ GraphicsManager::~GraphicsManager()
 void GraphicsManager::EndFrame()
 {
 	pSwapChain->Present(1u, NULL);
+}
+
+void GraphicsManager::ClearBuffer(float Red, float Green, float Blue) noexcept
+{
+	const float Color[] = { Red, Green, Blue, 1.f };
+	pContext->ClearRenderTargetView(pTargetView, Color);
 }

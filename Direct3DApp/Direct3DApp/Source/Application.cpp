@@ -14,5 +14,7 @@ int Application::Run()
 
 void Application::DoFrame()
 {
+	const float c = sin(timer.Peek()) / 2.f + .5f;
+	Window.Graphics().ClearBuffer(1.f, c, c);
 	Window.Graphics().EndFrame();
 }
